@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Secuencia Cuántica Numerológica</title>
+    <style>
+        /* Reset y configuración Anti-Scroll */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body, html {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            background-color: #05030A; /* Negro profundo casi azul */
+            color: #ffffff;
+        }
+
+        /* Contenedor principal Premium */
+        #app-container {
+            position: relative;
+            width: 100%;
+            max-width: 480px;
+            height: 100%;
+            margin: 0 auto;
+            background: linear-gradient(145deg, #1A102A 0%, #05030A 100%);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+        }
+
+        /* Efecto de partículas de fondo sutil (Opcional, con CSS) */
+        #app-container::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: radial-gradient(rgba(212, 175, 55, 0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Barra de progreso estilo Stories refinada */
+        .progress-container {
+            display: flex;
+            gap: 4px;
+            padding: 20px 20px 10px 20px;
+            width: 100%;
+            z-index: 10;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #D4AF37, #F3E5AB); /* Oro viejo a champagne */
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 8px rgba(212, 175, 55, 0.5);
+        }
+
+        /* Contenedor de Slides con animaciones fluidas */
+        #slides-container {
+            flex: 1;
+            position: relative;
+            width: 100%;
+            z-index: 5;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.6s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transform: scale(0.97) translateY(15px);
+            text-align: center;
+        }
+
+        .slide.active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: scale(1) translateY(0);
+        }
+
+        /* Tipografía elegante */
+        .slide h1 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            font-weight: 300;
+            letter-spacing: 1px;
+            color: #FFFFFF;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        .slide.active h1 {
+            animation: fadeUp 0.8s ease forwards 0.2s;
+        }
+
+        /* Títulos destacados en Oro */
+        .highlight-gold {
+            background: linear-gradient(to right, #D4AF37, #FFF5C3, #D4AF37);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 600;
+        }
+
+        .slide p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #A99EBE; /* Gris violeta sutil */
+            margin-bottom: 25px;
+            font-weight: 300;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        .slide.active p {
+            animation: fadeUp 0.8s ease forwards 0.4s; /* Aparece después del título */
+        }
+
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Iconos o gráficos sutiles (CSS puros) */
+        .mystic-icon {
+            width: 60px;
+            height: 60px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 50%;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #D4AF37;
+            opacity: 0;
+            box-shadow: inset 0 0 15px rgba(212, 175, 55, 0.1);
+        }
+        .slide.active .mystic-icon {
+            animation: fadeUp 0.8s ease forwards 0.1s;
+        }
+
+        /* Contenedores de Anuncios Adsterra Elegantes */
+        .ad-container {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            margin: 20px 0;
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            transform: scale(0.95);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .slide.active .ad-container {
+            animation: fadeInScale 0.8s ease forwards 0.6s;
+        }
+
+        @keyframes fadeInScale {
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .ad-320x50 { width: 320px; height: 50px; }
+        .ad-300x200 { width: 300px; height: 200px; }
+
+        /* Tarjetas de Números (Mecánica Flip Premium) */
+        .numbers-grid {
+            display: flex;
+            gap: 18px;
+            margin-top: 30px;
+            opacity: 0;
+        }
+        .slide.active .numbers-grid {
+            animation: fadeUp 0.8s ease forwards 0.5s;
+        }
+
+        .flip-card {
+            background-color: transparent;
+            width: 75px;
+            height: 105px;
+            perspective: 1000px;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            font-weight: 400;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+        }
+
+        .flip-card-front {
+            background: linear-gradient(135deg, #241635, #140A20);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.2); 
+            font-weight: 300;
+        }
+
+        .flip-card-back {
+            background: linear-gradient(135deg, #D4AF37, #F3E5AB);
+            color: #05030A;
+            transform: rotateY(180deg);
+            border: 1px solid #FFF5C3;
+            font-weight: 600;
+            text-shadow: 0 1px 2px rgba(255,255,255,0.5);
+        }
+
+        /* Zona del Botón Inferior */
+        .bottom-action {
+            padding: 0 25px 35px 25px; /* Safe area */
+            width: 100%;
+            z-index: 10;
+        }
+
+        .btn-primary {
+            width: 100%;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #FFFFFF;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 400;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.97);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Botón de acción principal (Final) */
+        .btn-action-gold {
+            background: linear-gradient(90deg, #B58A2D, #D4AF37);
+            border: none;
+            color: #05030A;
+            font-weight: 600;
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.3);
+        }
+        
+        .btn-action-gold::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.4), transparent);
+            transform: skewX(-25deg);
+            animation: shinePremium 4s infinite;
+        }
+
+        @keyframes shinePremium {
+            0% { left: -100%; }
+            15% { left: 200%; }
+            100% { left: 200%; }
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="app-container">
+    <!-- Barras de Progreso -->
+    <div class="progress-container" id="progress-container">
+        <div class="progress-bar"><div class="progress-fill" id="fill-0"></div></div>
+        <div class="progress-bar"><div class="progress-fill" id="fill-1"></div></div>
+        <div class="progress-bar"><div class="progress-fill" id="fill-2"></div></div>
+        <div class="progress-bar"><div class="progress-fill" id="fill-3"></div></div>
+        <div class="progress-bar"><div class="progress-fill" id="fill-4"></div></div>
+        <div class="progress-bar"><div class="progress-fill" id="fill-5"></div></div>
+        <div class="progress-bar"><div class="progress-fill" id="fill-6"></div></div>
+    </div>
+
+    <!-- Slides de Contenido -->
+    <div id="slides-container">
+        
+        <!-- Slide 1: Hook Elegante -->
+        <div class="slide active" id="slide-0">
+            <div class="mystic-icon">✨</div>
+            <h1>Bienvenido a tu <br><span class="highlight-gold">Lectura Cuántica</span></h1>
+            <p>La numerología no es coincidencia. Que hayas llegado hasta aquí, tampoco lo es.</p>
+        </div>
+
+        <!-- Slide 2: Generando Confianza + Banner Pequeño -->
+        <div class="slide" id="slide-1">
+            <h1>Sincronización <br>Universal</h1>
+            <p>Estamos alineando la vibración de tu fecha con los patrones del universo.</p>
+            <div class="ad-container ad-320x50">
+                <!-- PEGA SCRIPT 320x50 AQUÍ -->
+                <span style="color: rgba(255,255,255,0.2); font-size: 12px; font-weight:300;">Anuncio Patrocinado</span>
+            </div>
+        </div>
+
+        <!-- Slide 3: Creando Expectativa -->
+        <div class="slide" id="slide-2">
+            <div class="mystic-icon">👁️</div>
+            <h1>Análisis <br><span class="highlight-gold">Completado</span></h1>
+            <p>Hemos detectado una anomalía positiva en tu campo numérico para los próximos días.</p>
+        </div>
+
+        <!-- Slide 4: Banner Grande (Alto Impacto) -->
+        <div class="slide" id="slide-3">
+            <h1>Cargando tu <br>Secuencia</h1>
+            <p>Por favor, mantén la concentración.</p>
+            <div class="ad-container ad-300x200">
+                <!-- PEGA SCRIPT 300x200 AQUÍ -->
+                <span style="color: rgba(255,255,255,0.2); font-size: 12px; font-weight:300;">Anuncio Patrocinado</span>
+            </div>
+        </div>
+        
+        <!-- Slide 5: Profundizando (Retención) -->
+        <div class="slide" id="slide-4">
+            <h1>El Poder del <br><span class="highlight-gold">Tres</span></h1>
+            <p>Esta secuencia ha sido diseñada específicamente para abrir puertas financieras. Úsala con sabiduría.</p>
+        </div>
+        
+        <!-- Slide 6: Banner Pequeño (Último impacto antes del cierre) -->
+        <div class="slide" id="slide-5">
+            <h1>Preparando <br>Revelación</h1>
+            <div class="ad-container ad-320x50">
+                <!-- PEGA SCRIPT 320x50 AQUÍ -->
+                <span style="color: rgba(255,255,255,0.2); font-size: 12px; font-weight:300;">Anuncio Patrocinado</span>
+            </div>
+            <p style="margin-top:20px;">Tus números están encriptados y listos.</p>
+        </div>
+
+        <!-- Slide 7: Revelación Final -->
+        <div class="slide" id="slide-6">
+            <h1>Tu Código <br><span class="highlight-gold">de Abundancia</span></h1>
+            <p>Memoriza esta secuencia.</p>
+            
+            <div class="numbers-grid">
+                <div class="flip-card" id="card-1"><div class="flip-card-inner"><div class="flip-card-front">?</div><div class="flip-card-back" id="num-1">00</div></div></div>
+                <div class="flip-card" id="card-2"><div class="flip-card-inner"><div class="flip-card-front">?</div><div class="flip-card-back" id="num-2">00</div></div></div>
+                <div class="flip-card" id="card-3"><div class="flip-card-inner"><div class="flip-card-front">?</div><div class="flip-card-back" id="num-3">00</div></div></div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Botón Inferior -->
+    <div class="bottom-action">
+        <button class="btn-primary" id="main-btn">Continuar</button>
+    </div>
+</div>
+
+<script>
+    let currentSlide = 0;
+    const totalSlides = 7;
+    const btn = document.getElementById('main-btn');
+    const slides = document.querySelectorAll('.slide');
+
+    // Inicializar primer progreso
+    document.getElementById('fill-0').style.width = '100%';
+
+    btn.addEventListener('click', () => {
+        // Preparar botón para la revelación (Slide 6)
+        if (currentSlide === totalSlides - 2) {
+            btn.innerHTML = 'REVELAR NÚMEROS';
+            btn.classList.add('btn-action-gold');
+        }
+
+        // Acción final (Slide 7)
+        if (currentSlide === totalSlides - 1) {
+            revelarNumeros();
+            btn.innerHTML = 'ACTIVAR MI SUERTE';
+            btn.onclick = () => { alert('Redirigir a Oferta CPA Directa'); };
+            return;
+        }
+
+        // Cambiar Slides
+        slides[currentSlide].classList.remove('active');
+        currentSlide++;
+        slides[currentSlide].classList.add('active');
+
+        // Llenar progreso
+        document.getElementById(`fill-${currentSlide}`).style.width = '100%';
+    });
+
+    function revelarNumeros() {
+        document.getElementById('num-1').innerText = Math.floor(Math.random() * 99) + 1;
+        document.getElementById('num-2').innerText = Math.floor(Math.random() * 99) + 1;
+        document.getElementById('num-3').innerText = Math.floor(Math.random() * 99) + 1;
+
+        setTimeout(() => { document.getElementById('card-1').classList.add('flipped'); }, 150);
+        setTimeout(() => { document.getElementById('card-2').classList.add('flipped'); }, 500);
+        setTimeout(() => { document.getElementById('card-3').classList.add('flipped'); }, 850);
+    }
+</script>
+
+</body>
+</html>
